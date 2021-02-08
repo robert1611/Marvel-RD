@@ -1,0 +1,83 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+<!--Flask Flashed Messages to User-->
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories = true) %}
+        {% if messages %}
+            {% for cat,msg in messages %}
+                {% if cat == 'auth-failed'%}
+                    <div class="alert alert-danger">
+                        {{ msg }}
+                        <button type="button" class="close" data-dismiss = "alert">&times;</button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<main class="main-signup container w-50 mt-5">
+    <div class="row">
+        <header>
+            <h1>Register</h1>
+    
+        </header>
+            
+            <div class="signup-form">
+                <form method="POST">
+                    {{form.csrf_token}}
+                    <div class="mb-3">
+                        <label for="signup-username" class="form-label">Email address</label>
+                        <input id="signup-username" class="form-control transparent" name="email" type="text" required>
+                    </div>
+                    <div class="mb-3">     
+                        <label for="signup-password" class="form-label">Password</label>
+                        <input id="signup-password" class="form-control transparent" name="password" type="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <button id="signup-submit" type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+    
+    
+
+
+        
+    </div>
+</main>
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+
+    $("#signup-submit-button").on("click", function(evt) {
+        const username = $("#signup-username").val()
+        const password = $("#signup-password").val()
+        const data = {username, password}
+        console.log(data)
+    
+        $.ajax({ 
+            url: "/signup",
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(data)
+        }).done(function(data){
+    
+            console.log('done')
+        }).fail(function(){
+    
+            console.log("fail")
+        })
+    })
+    
+    </script>
+
+
+{% endblock %}

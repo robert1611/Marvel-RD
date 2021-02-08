@@ -1,0 +1,67 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Marvel Heros"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+<link rel="stylesheet" href="../../static/css/styles.css">
+<title>Marvel Heroes</title>
+
+</head>
+
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" height="45" width="90"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" href="#">Social Media</a>
+          <a class="nav-link" href="#">Superhero</a>
+          <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+          <a class="nav-link" href="{{ url_for('signup') }}">Signup</a>
+          <a class="nav-link" href="{{ url_for('signin') }}">Login</a>
+        <div>
+      </div>
+    </div>
+  </nav>
+
+<!--User Auth Check for SignIn/SignUp Nav Buttons-->
+{% if current_user.is_authenticated %}
+<a href="{{ url_for('logout') }}">
+    <li>Log Out</li>
+</a>
+{% else %}
+<a href="{{ url_for('signin') }}">
+    <li>Sign In</li>
+</a>
+<a href="{{ url_for('signup') }}">
+    <li>Sign Up Free</li>
+</a>
+{% endif %}
+
+
+
+  {% block content %}
+
+    {% endblock content %}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+{% block script %}
+{% endblock  %}
+</body>
+</html>

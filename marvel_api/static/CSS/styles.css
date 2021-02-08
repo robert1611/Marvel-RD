@@ -1,0 +1,48 @@
+body {
+
+    background-color:red;
+    background-image: linear-gradient(to right bottom, rgba(30,115,172,0.4),rgba(142, 57, 153,0.4)), url("../images/spidey.jpg");
+    background-size: cover;
+}
+    /* top:0;
+    left:0;
+    bottom: 0;
+    right:0;
+    position: fixed;
+    z-index: -1;
+    content: "";
+    
+}
+ */
+
+/* .navbar {
+
+    background-color:black;
+    color: white;
+    height: 10vh;
+    width: 100vw;
+    border-bottom: 3px solid red;
+    padding-top:10px;
+    margin:0px;
+    position: fixed;
+    top: 0;
+    left:0;
+}
+
+.my-top {
+
+    display: flex;
+    /* justify-content: space-around; */
+    /* list-style-type: none;
+    text-transform: uppercase;
+    
+}
+
+.logo {
+    padding-right: 0px;
+    margin-right: 800px;
+} */ 
+
+.transparent {
+    background-color: rgba(255, 255, 255, 0.5);
+}

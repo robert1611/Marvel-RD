@@ -1,0 +1,74 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+<!--Flask Flashed Messages to User-->
+
+
+<div class="main-signin container w-50 mt-5">
+    <header>
+        <h1>Login</h1>
+
+    </header>
+        
+        <div class="signup-form">
+            <form method="POST">
+                {{form.csrf_token}}
+                <div class="mb-3">
+                    <label for="signin-username" class="form-label">Email address</label>
+                    <input id="signin-username" class="form-control transparent" name="email" type="text" required>
+                </div>
+                <div class="mb-3">     
+                    <label for="signin-password" class="form-label">Password</label>
+                    <input id="signin-password" class="form-control transparent" name="password" type="password" required>
+                </div>
+                <div class="mb-3">
+                    <button id="signin-submit-button" type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+
+
+    <!--Button For Google Sign Up-->
+    <a href="{{ url_for('google_auth') }}">
+        <button class="btn btn-dark">
+            Sign In With Google
+        </button>
+    </a>
+
+
+</div>
+
+
+
+
+{% endblock %} 
+{% block script %}
+
+<script>
+
+    $("#signin-submit-button").on("click", function(evt) {
+        const username = $("#signin-username").val()
+        const password = $("#signin-password").val()
+        const data = {username, password}
+        console.log(data)
+    
+        $.ajax({ 
+            url: "/signin",
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(data)
+        }).done(function(data){
+    
+            console.log('done')
+        }).fail(function(){
+    
+            console.log("fail")
+        })
+    })
+    
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,16 @@
+Users should include the following fields:
+- id (uuid)
+- name (String)
+- password (String)[Hashed]
+- token (String)[secret]
+- g_auth_verify (Boolean)
+- date_created (DateTime)[w/ datetime.utcnow]
+- character (relationship)
+
+ id (Integer)
+- name (String)
+- description (String)
+- comics_appeared_in (Integer)
+- super_power (String)
+- date_created (DateTime w/ datetime.utcnow)
+- owner (FK to User using the user's token)

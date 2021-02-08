@@ -1,0 +1,8 @@
+{
+	"name": "Bruce Banner",
+	"description": "Green Monster",
+	"comics_appeared_in": "Crazy Green Guy",
+	"super_power": "awesome strength",
+	"date_created": 1962,
+	"character": "The Incredible Hulk"
+}

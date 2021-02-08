@@ -1,0 +1,50 @@
+BUTTONS
+
+<div class ="container">
+        <button type="button" class="btn btn-primary">Secondary</button>
+        <button type="button" class="btn btn-secondary">Warning</button>
+        <button type="button" class="btn btn-warning">Warning</button>
+        <button type="button" class="btn btn-light">Light</button>
+        <button type="button" class="btn btn-dark">Dark</button>
+        <button type="button" class="btn btn-outline-primary">Secondary</button>
+        <button type="button" class="btn btn-outline-secondary">Warning</button>
+        <button type="button" class="btn btn-outline-warning">Warning</button>
+        <button type="button" class="btn btn-outline-light">Light</button>
+        <button type="button" class="btn btn-outline-dark">Dark</button>
+</div>
+
+CARD with TEXT
+
+<div class="card mt-3" style="width: 50rem">
+        <img class="card-img-top" src="logo.jpg" height="50rem" width="25rem">
+        <div class="card-body">
+            <h5 class="card-title">Card Title</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea dolorum totam fuga quam, adipisci optio labore earum assumenda voluptas in nulla illum, quia velit non nemo a ab placeat libero!</p>
+        </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="col">
+    <div class="card h-100">
+      <img src="http://placekitten.com/200/200" class="card-img-top" alt="cat">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque magna dui, mattis ornare massa a, dapibus iaculis est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. .</p>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

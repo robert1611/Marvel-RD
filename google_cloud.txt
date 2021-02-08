@@ -1,0 +1,14 @@
+Google Auth - Marvel
+
+CLient ID:  145330078587-hq0lubstkm7nf2etd6kdgik9djhcc7fb.apps.googleusercontent.com
+
+Yout Client Secret kMcqdwHi8g3oChvV6AZS5qH6
+
+
+
+Old
+
+354305776068-2d95n85mqob7cc59uraqeatgvc5faijl.apps.googleusercontent.com
+
+eL37pGY5L1U4zMGkV7_2352r
+

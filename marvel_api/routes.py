@@ -1,57 +1,57 @@
+import os
 from marvel_api import app, db, oauth
 from flask import render_template, request, redirect, url_for, session, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 
 
 from marvel_api.forms import UserLoginForm
-from marvel_api.models import User, check_password_hash, Marvel, marvel_schema
+from marvel_api.models import User, check_password_hash, Marvel, marvel_schema, marvels_schema
 from marvel_api.helpers import get_jwt, token_required, verify_owner
 
-from decouple import config
+# from decouple import config
 
-import os
+
 
 # Google OAUTH Routes and config info
 google = oauth.register(
     name='google',
-    client_id=config("GOOGLE_CLIENT_ID_TEST"),
-    client_secret=config("GOOGLE_CLIENT_SECRET_TEST"),
+    client_id=os.getenv("GOOGLE_CLIENT_ID_TEST"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET_TEST"),
     access_token_url='https://accounts.google.com/o/oauth2/token',
     access_token_params=None,
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     authorize_params=None,
     api_base_url='https://www.googleapis.com/oauth2/v1/',
     userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is only needed if using openId to fetch user info
-    client_kwargs={'scope': 'openid email profile'},
+    client_kwargs={'scope': 'openid profile'},
 )
-print(config("GOOGLE_CLIENT_ID_TEST"))
+print(os.getenv("GOOGLE_CLIENT_ID_TEST"))
 
 @app.route('/')
 def base():
-    user = User.query.all()
-    print(user)
+    # user = User.query.all()
+    # print(user)
     return render_template('home.html')
 
 @app.route('/signup', methods = ['GET','POST'])
 def signup():
     form = UserLoginForm()
 
-    try:
-        if request.method == 'POST' and form.validate_on_submit():
-            email = form.email.data
-            password = form.password.data
-            print(email,password)
+    if request.method == 'POST' and form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        print('here', email, password)
 
-            user = User(email, password = password)
+        user = User(email, password = password)
 
-            db.session.add(user)
-            db.session.commit()
+        db.session.add(user)
+        db.session.commit()
 
-            flash('Signup successful', 'signup-success')
-            return redirect(url_for('signin'))
+        # flash('Signup successful', 'signup-success')
+        return redirect(url_for('signin'))
 
-    except Exception as e:
-        raise Exception('Invalid Form Data: Please Check your form') from e
+    # except Exception as e:
+      #  raise Exception('Invalid Form Data: Please Check your form') from e
     
     return render_template('signup.html', form=form)
 
@@ -61,11 +61,12 @@ def signin():
 
     
     if request.method == 'POST' and form.validate_on_submit():
+        # 'here' = form.'here'.data
         email = form.email.data
         password = form.password.data
-        print(email,password)
+        print(email, password)
 
-        logged_user = User.query.filter(User.username == email).first()
+        logged_user = User.query.filter(User.email ==email).first()
         if logged_user and check_password_hash(logged_user.password, password):
             login_user(logged_user)
             flash('You were successfully logged in: Via Email/Password', 'auth-success')
@@ -144,7 +145,7 @@ def logout():
     return redirect(url_for('base'))
 
 #CREATE MARVEL ENDPOINT
-@app.route('/marvel', methods = ['POST'])
+@app.route('/marvels', methods = ['POST'])
 @token_required
 def create_marvel(current_user_token):
     print(current_user_token)
@@ -156,57 +157,89 @@ def create_marvel(current_user_token):
     character = request.json['character']
     user_id = current_user_token.token
 
-    marvel = Marvel(name, description, comics_appeared_in, super_power, owner=user_id)
+    marvel = Marvel(name, description, comics_appeared_in, super_power, owner=user_id, character=character)
 
     db.session.add(marvel)
     db.session.commit()
+
 
     response = marvel_schema.dump(marvel)
     return jsonify (response)
 
 # RETRIEVE ALL MARVEL ENDPOINT
-@app.route('/marvel', methods = ['GET'])
+@app.route('/marvels', methods = ['GET'])
 @token_required
 def get_marvels(current_user_token):
-    try:
-        owner, current_user_token = verify_owner(current_user_token)
-    except:
-        bad_res = verify_owner(current_user_token)
-        return bad_res
-    owner, current_user_token = verify_owner(current_user_token)
-    marvel = Marvel.query.filter_by(user_id = owner.user_id).all()
-    response = marvel_schema.dump(marvel)
+    current_user_token = request.headers['X-Access-Token']
+    owner_id = verify_owner(current_user_token)
+    print(f'owner_id={owner_id}')
+    marvels = db.session.query(Marvel).filter(Marvel.owner == owner_id)
+    print(marvels.count())
+    response = marvels_schema.dump(marvels)
     return jsonify(response)
 
 # #RETRIEVE ONE MARVEL ENDPOINT
 @app.route('/marvels/<id>', methods = ['GET'])
 @token_required
 def get_marvel(current_user_token, id):
-    try:
-        owner, current_user_token = verify_owner(current_user_token)
-    except:
-        bad_res = verify_owner(current_user_token)
-        return bad_ress
-    owner, current_user_token = verify_owner(current_user_token)
     marvel = Marvel.query.get(id)
     response = marvel_schema.dump(marvel)
     return jsonify(response)
 
-# # UPDATE MARVEL ENDPOINT
-@app.route('/marvels/<id>', methods = ['POST', 'PUT'])
+
+def _recommendation_1(current_user_token):
+    try:
+        user: User = verify_owner(current_user_token)
+    except:
+        return { 'error': 'Invalid or expired authentication token'}
+    # Later code can rely on the `user` variable containing the 
+    # currently authenticated user
+
+#@app.route('/marvels', methods=['POST'])
 @token_required
-def update_marvel(current_user_token, id):
+def _create_marvel(current_user_token):
     try:
         owner, current_user_token = verify_owner(current_user_token)
     except:
-        bad_res = verify_owner(current_user_token)
-        return bad_res
-    owner, current_user_token = verify_owner(current_user_token)
-    marvel - Marvel.query.get(id) # Get Marvel Instance
+        return jsonify({ 'error': 'Invalid or expired authentication token'}), 403
+
+    # owner, current_user_token = verify_owner(current_user_token) # does not have to be called again - already called on line 206
+    
+    # Instead of lines 197-202, consider _recommendation_1() above
+
+    request_body = request.json
+    marvel = Marvel(
+        name=request_body['name'],
+        description=request_body['description'],
+        comics_appeared_in=request_body['comics_appeared_in'],
+        super_power=request_body['super_power'],
+        owner=owner
+    )
+    db.session.add(marvel)
+    db.session.commit()
+    response = marvel_schema.dump(marvel)
+    return jsonify(response)    
+
+
+# # UPDATE MARVEL ENDPOINT
+@app.route('/marvels/<id>', methods = ['PUT'])
+@token_required
+def update_marvel(current_user_token, id):
+    marvel = Marvel.query.get(id) # Get Marvel Instance
+
+    if marvel is None:
+        return jsonify({'error': 'Not found'}), 404
     
     marvel.name = request.json['name']
-    marvel.price = request.json['price']
-    marvel.model = request.json['model']
+    marvel.description = request.json['description']
+    marvel.comics_appeared_in = request.json['comics_appeared_in']
+    marvel.super_power = request.json['super_power']
+    marvel.date_created = request.json['date_created']
+    # HACK ALERT: The semantics below is more suited to a PATCH request
+    # per the RESTful API design patterns
+    
+    marvel.character = request.json.get('character') or marvel.character
+    marvel.user_id = current_user_token.token
 
     db.session.commit()
     response = marvel_schema.dump(marvel)
@@ -216,13 +249,9 @@ def update_marvel(current_user_token, id):
 @app.route('/marvels/<id>', methods = ['DELETE'])
 @token_required
 def delete_marvel(current_user_token,id):
-    try:
-        owner, current_user_token = verify_owner(current_user_token)
-    except:
-        bad_res = verify_owner(current_user_token)
-        return bad_res
-    owner, current_user_token - verify_owner(current_user_token)
-    marvel - Marvel.query.get(id) #Get marvel instance
+    marvel = db.session.query(Marvel).filter(Marvel.id == id, 
+        Marvel.owner == current_user_token.token).first()
+        
     db.session.delete(marvel)
     db.session.commit()
     response = marvel_schema.dump(marvel)

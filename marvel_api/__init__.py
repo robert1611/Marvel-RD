@@ -1,6 +1,5 @@
 from flask import Flask
-
-from .config import Config
+from marvel_api.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -13,8 +12,12 @@ from authlib.integrations.flask_client import OAuth
 # import for Flask-Marshmallow
 from flask_marshmallow import Marshmallow
 
+from flask_cors import CORS
+
 app = Flask(__name__)
 app.config.from_object(Config)
+
+CORS(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

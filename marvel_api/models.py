@@ -53,14 +53,16 @@ class Marvel(db.Model):
     super_power = db.Column(db.String(150))
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     owner = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
+    character = db.Column(db.String(150))
 
-    def __init__(self, name, description, comics_appeared_in, super_power, owner):
+    def __init__(self, name, description, comics_appeared_in, super_power, owner, character):
 
         self.name = name
         self.description = description
         self.comics_appeared_in = comics_appeared_in
         self.super_power = super_power
         self.owner = owner
+        self.character = character
 
     def set_id(self):
         return str(uuid.uuid4())

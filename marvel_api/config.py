@@ -1,5 +1,4 @@
 import os
-from decouple import config
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Give access to the project in ANY OS we find ourlselves in
@@ -13,6 +12,7 @@ class Config():
         create the config variable if not done already
 
     """
-    SECRET_KEY = config('SECRET_KEY') or 'You will never guess'
-    SQLALCHEMY_DATABASE_URI = config('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False #Turn off update notifications from SQL ALCHEMY
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'You will never guess'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:Robert1972@127.0.0.1:5432/marvel_api'
+    print(SQLALCHEMY_DATABASE_URI)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False #Turn off update messages

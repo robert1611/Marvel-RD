@@ -44,11 +44,5 @@ def token_required(our_flask_funtion):
     return decorated
     
 def verify_owner(current_user_token):
-    owner = Marvel.query.filter_by(user_id = current_user_token.token).first()
-    print(current_user_token.token)
-    print(owner)
-    if owner == None:
-        return jsonify({'message': "You don't have any characters created! Create One!!"})
-    if owner.user_id != current_user_token.token:
-        return jsonify({'message': "Token is invalid - not authorized to view data"})
-    return owner, current_user_token
+    data = jwt.decode(current_user_token.split(' ')[1], app.config['SECRET_KEY'], algorithms = ['HS256'])
+    return  data['owner']

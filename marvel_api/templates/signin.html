@@ -47,26 +47,26 @@
 
 <script>
 
-    $("#signin-submit-button").on("click", function(evt) {
-        const username = $("#signin-username").val()
-        const password = $("#signin-password").val()
-        const data = {username, password}
-        console.log(data)
+    // $("#signin-submit-button").on("click", function(evt) {
+    //     const username = $("#signin-username").val()
+    //     const password = $("#signin-password").val()
+    //     const data = {username, password}
+    //     console.log(data)
     
-        $.ajax({ 
-            url: "/signin",
-            type: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(data)
-        }).done(function(data){
+    //     $.ajax({ 
+    //         url: "/signin",
+    //         type: "POST",
+    //         contentType: "application/json",
+    //         dataType: "json",
+    //         data: JSON.stringify(data)
+    //     }).done(function(data){
     
-            console.log('done')
-        }).fail(function(){
+    //         console.log('done')
+    //     }).fail(function(){
     
-            console.log("fail")
-        })
-    })
+    //         console.log("fail")
+    //     })
+    // })
     
     </script>
 

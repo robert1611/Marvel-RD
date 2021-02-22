@@ -186,14 +186,14 @@ def get_marvels(current_user_token):
 
 # #RETRIEVE ONE MARVEL ENDPOINT
 
-
+"""
 @app.route('/marvels/<id>', methods=['GET'])
 @token_required
 def get_marvel(current_user_token, id):
     marvel = Marvel.query.get(id)
     response = marvel_schema.dump(marvel)
     return jsonify(response)
-
+"""
 
 def _recommendation_1(current_user_token):
     try:

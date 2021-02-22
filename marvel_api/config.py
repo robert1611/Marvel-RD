@@ -13,6 +13,7 @@ class Config():
 
     """
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'You will never guess'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:Robert1972@127.0.0.1:5432/marvel_api'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql://postgres:Robert1972@127.0.0.1:5432/marvel_api')
+    #'postgresql://postgres:Robert1972@127.0.0.1:5432/marvel_api'
     print(SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_TRACK_MODIFICATIONS = False #Turn off update messages

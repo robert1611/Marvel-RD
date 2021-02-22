@@ -1,4 +1,5 @@
 import os
+import datetime
 from marvel_api import app, db, oauth
 from flask import render_template, request, redirect, url_for, session, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
@@ -244,7 +245,7 @@ def update_marvel(current_user_token, id):
     marvel.description = request.json['description']
     marvel.comics_appeared_in = request.json['comics_appeared_in']
     marvel.super_power = request.json['super_power']
-    marvel.date_created = request.json['date_created']
+    marvel.date_created = datetime.datetime.now()
     # HACK ALERT: The semantics below is more suited to a PATCH request
     # per the RESTful API design patterns
 

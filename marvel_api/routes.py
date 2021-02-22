@@ -232,7 +232,7 @@ def _create_marvel(current_user_token):
 
 
 # # UPDATE MARVEL ENDPOINT
-@app.route('/marvels/<id>', methods=['PUT'])
+@app.route('/marvels/<id>', methods=['PUT', 'POST'])
 @token_required
 def update_marvel(current_user_token, id):
     marvel = Marvel.query.get(id)  # Get Marvel Instance
